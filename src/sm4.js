@@ -45,7 +45,12 @@ class SM4 {
    * @memberof SM4
    */
   constructor (config) {
-    let keyBuffer = Crypt.stringToArrayBufferInUtf8(config.key)
+    let keyBuffer
+    if (keyBuffer instanceof String) {
+      keyBuffer = Crypt.stringToArrayBufferInUtf8(config.key)
+    } else {
+      keyBuffer = config.key
+    }
     if (keyBuffer.length !== 16) {
       throw new Error('key should be a 16 bytes string')
     }
@@ -61,7 +66,11 @@ class SM4 {
     let ivBuffer = new Uint8Array(0)
     if (config.iv !== undefined && config.iv !== null) {
       // need iv
-      ivBuffer = Crypt.stringToArrayBufferInUtf8(config.iv)
+      if (ivBuffer instanceof String) {
+        ivBuffer = Crypt.stringToArrayBufferInUtf8(config.iv)
+      } else {
+        ivBuffer = config.iv
+      }
       if (ivBuffer.length !== 16) {
         throw new Error('iv should be a 16 bytes string')
       }
